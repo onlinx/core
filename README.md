@@ -11,7 +11,7 @@ Using with Typescript is as simple as running `npm install @onlinx/core` and imp
 
 Here's the hello world example in Typescript
 ```ts
-import { Controller, Router, Server } from 'onlinx';
+import { Controller, Router, Server } from '@onlinx/core';
 
 const router = new Router();
 
@@ -95,7 +95,7 @@ By default, runs tests related to files changed since the last commit.
 ### Hello world program
 
 ```typescript
-import { Controller, Router, Server } from './node_modules/onlinx';
+import { Controller, Router, Server } from '@onlinx/core';
 
 const router = new Router();
 
@@ -114,7 +114,7 @@ app.mount(3000, () => console.log('running...'));
 ### Simple middlewares
 
 ```typescript
-import { Controller, Router, Server, Context } from './node_modules/onlinx';
+import { Controller, Router, Server, Context } from '@onlinx/core';
 
 const router = new Router();
 
