@@ -1,0 +1,60 @@
+{
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 11,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "sort-imports-es6-autofix"
+  ],
+  "rules": {
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "array-bracket-spacing": [
+      "error",
+      "always"
+    ],
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
+    "sort-imports-es6-autofix/sort-imports-es6": [
+      2, {
+        "ignoreCase": false,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+      }
+    ],
+    "no-unused-vars":"warn"
+  }
+}

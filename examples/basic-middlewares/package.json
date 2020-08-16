@@ -1,0 +1,19 @@
+{
+  "name": "hello-world",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node index.ts"
+  },
+  "author": "Andrew Kachnic <ajkachnic@protonmail.com> (andrewkachnic.now.sh)",
+  "license": "MIT",
+  "devDependencies": {
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "onlinx": "file:../../"
+  }
+}
