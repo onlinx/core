@@ -5,9 +5,9 @@ test('routes are added', async () => {
 
   router.route('/', {
     get() {
-      return 'hello world'
+      return 'hello world';
     }
-  })
+  });
 
   expect(router.routes.length).toBe(1);
 });

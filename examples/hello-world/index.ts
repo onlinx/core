@@ -1,13 +1,13 @@
-import { Controller, Router, Server } from './node_modules/onlinx';
+import { Controller, Router, Server } from '@onlinx/core';
 
 const router = new Router();
 
 
 router.route('/', {
   get() {
-    return 'hello world'
+    return 'hello world';
   }
-})
+});
 const controller = new Controller(router);
 
 const app = new Server(controller);

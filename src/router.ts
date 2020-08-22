@@ -1,9 +1,9 @@
 import * as http from 'http';
 import * as url from 'url';
 
-import { HandlerCallback } from './handler';
-import { getRoute, createContextRequest } from './utils/helpers';
 import { Context, HeadersObject } from './context';
+import { HandlerCallback } from './handler';
+import { createContextRequest, getRoute } from './utils/helpers';
 
 type AcceptedHandler = HandlerCallback | HandlerCallback[] | undefined;
 
@@ -16,7 +16,7 @@ interface RoutesObject {
   options?: AcceptedHandler
   all?: AcceptedHandler
   [key: string]: AcceptedHandler
-};
+}
 
 export interface Route {
   path: string
@@ -51,50 +51,54 @@ export class Router {
       //     }
       //   } 
       // });
-      const correctRoute = getRoute(path || '', this.routes)
-      await handleRoute(correctRoute, request, response)
+      const correctRoute = getRoute(path || '', this.routes);
+      await handleRoute(correctRoute, request, response);
     };
   }
 }
 
 const handleRoute = async (route: Route, request: http.IncomingMessage, response: http.ServerResponse) => {
-  const contextRequest = createContextRequest(request)
-  const routeContext = new Context(contextRequest)
+  const contextRequest = createContextRequest(request);
+  const routeContext = new Context(contextRequest);
 
-  for(let [method, handler] of Object.entries(route.routes)) {
+  for(const [ method, handler ] of Object.entries(route.routes)) {
     // if(method === 'all') {
     //   continue;
     // }
     if(method === request.method?.toLowerCase()) {
       if(handler instanceof Array) {
-        for(const h of handler) {
-          const res = await h(routeContext)
-          if(res === undefined ||res === true) {
-            continue
-          } else if(res === false ) {
-            break
-          } else {
-            await createResponse<typeof res>(res, response, routeContext)
-            break
-          }
-        }
+        await handleHandlerArray(handler, routeContext, response);
       } else if(handler != undefined) {
-          const res = await handler(routeContext)
-          await createResponse<typeof res>(res, response, routeContext)
-        }
+        const res = await handler(routeContext);
+        await createResponse<typeof res>(res, response, routeContext);
       }
+    }
   }
-}
+};
 const createResponse = <T>(handlerResponse: T, response: http.ServerResponse, context: Context) => {
-  let headers: HeadersObject = {}
+  let headers: HeadersObject = {};
   if(typeof handlerResponse === 'object') {
-    headers['Content-Type'] = 'application/json'
+    headers['Content-Type'] = 'application/json';
   }
   headers = {
     ...headers,
     ...context.response.headers
+  };
+  response.writeHead(context.response.status, headers);
+  response.write(handlerResponse);
+  response.end();
+};
+
+const handleHandlerArray = async (handler: HandlerCallback[], context: Context, response: http.ServerResponse) => {
+  for(const h of handler) {
+    const res = await h(context);
+    if(res === undefined ||res === true) {
+      continue;
+    } else if(res === false ) {
+      break;
+    } else {
+      await createResponse<typeof res>(res, response, context);
+      break;
+    }
   }
-  response.writeHead(context.response.status, headers)
-  response.write(handlerResponse)
-  response.end()
-}
+};

@@ -1,5 +1,5 @@
 {
-  "name": "hello-world",
+  "name": "basic-middlewares",
   "version": "0.0.0",
   "description": "",
   "main": "index.ts",
@@ -14,6 +14,6 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "onlinx": "file:../../"
+    "@onlinx/core": "file:../.."
   }
 }

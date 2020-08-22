@@ -27,16 +27,10 @@ export class Context {
   readonly response: ContextResponse
   private request: ContextRequest
 
-  body?: string | Buffer | UnknownObject
   headers: Headers
-  continued: boolean = false
-
-  continue() {
-    this.continued = true;
-  }
-  
+  data: UnknownObject
   constructor(request: ContextRequest) {
-    
+    this.data = {};
     // Makes sure that the defaultResponse is not mutated
     this.response = {
       ...defaultResponse

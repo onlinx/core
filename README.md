@@ -11,7 +11,7 @@ Using with Typescript is as simple as running `npm install @onlinx/core` and imp
 
 Here's the hello world example in Typescript
 ```ts
-import { Controller, Router, Server } from 'onlinx';
+import { Controller, Router, Server } from '@onlinx/core';
 
 const router = new Router();
 
@@ -31,7 +31,29 @@ The server will be running on port 3000
 
 ### Node
 
-Usage with node is coming soon. We need to configure some config options to get it to work with both Typescript and Node
+Run `npm install @onlinx/core`
+
+Here's the hello world example in Node
+```ts
+const { Controller, Router, Server } = require('@onlinx/core');
+
+const router = new Router();
+
+router.route('/', {
+  get() {
+    return 'hello world'
+  }
+})
+const controller = new Controller(router);
+
+const app = new Server(controller);
+
+app.mount(3000, () => console.log('running...'));
+```
+
+The server will be running on port 3000
+
+As you can tell, it's not very different from the typescript verson. From now on, all examples are in Typescript
 
 ## API Documentation
 
@@ -55,6 +77,26 @@ The `headers` property has two sub-methods, `headers.get` and `headers.set`.
 The `status` method sets the status to send. 
 
 Note: this does not send the status code, but sets it when the response is sent. This means that middlewares can safely set the status and still pass to the next handler
+
+#### `data`
+
+The `data` object allows middlewares to pass data to the next handler. For example, a body parser could pass the contents of the body to the rest of the middlewares
+
+Note that type assertions are neccessary at the moment due to the way it is set up
+
+Example (only the important parts):
+```ts
+const body = (ctx: Context) => {
+  ctx.data.body = 'hello';
+  return true
+}
+
+router.route('/', {
+  get: [body, (ctx: Context) => {
+    return ctx.data.body as string;
+  }]
+})
+```
 
 ## Common questions
 
@@ -94,8 +136,8 @@ By default, runs tests related to files changed since the last commit.
 
 ### Hello world program
 
-```typescript
-import { Controller, Router, Server } from './node_modules/onlinx';
+```ts
+import { Controller, Router, Server } from '@onlinx/core';
 
 const router = new Router();
 
@@ -113,7 +155,7 @@ app.mount(3000, () => console.log('running...'));
 
 ### Simple middlewares
 
-```typescript
+```ts
 import { Controller, Router, Server, Context } from './node_modules/onlinx';
 
 const router = new Router();
