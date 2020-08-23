@@ -35,6 +35,7 @@ export const sortRoutes = (routes: Route[]): Route[] => {
 // Context related functions
 export const createContextRequest = (request: IncomingMessage): ContextRequest => {
   return {
-    headers: request.headers
+    headers: request.headers,
+    raw: request
   };
 };

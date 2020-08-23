@@ -1,8 +1,8 @@
-import { IncomingHttpHeaders } from 'http';
+import { IncomingHttpHeaders, IncomingMessage } from 'http';
 import { MimeTypes, UnknownObject } from './utils/types';
 
 type HeadersUnion = string | number | string[]
-export type HeadersObject =  UnknownObject<HeadersUnion>
+export type HeadersObject = UnknownObject<HeadersUnion>
 
 export interface ContextResponse {
   type: MimeTypes
@@ -11,6 +11,7 @@ export interface ContextResponse {
 }
 export interface ContextRequest {
   headers: IncomingHttpHeaders
+  raw: IncomingMessage
 }
 const defaultResponse: ContextResponse = {
   type: 'text/plain',
@@ -27,9 +28,12 @@ export class Context {
   readonly response: ContextResponse
   private request: ContextRequest
 
+  readonly raw: IncomingMessage;
+
   headers: Headers
   data: UnknownObject
   constructor(request: ContextRequest) {
+    this.raw = request.raw;
     this.data = {};
     // Makes sure that the defaultResponse is not mutated
     this.response = {
